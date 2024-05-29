@@ -2,10 +2,9 @@
 	<div class="container">
 		<div class="events-page">
 			<div class="header-page">
-				<h1 class="header-page-title">Развлечения</h1> 
+				<h1 class="header-page-title">Развлечения</h1>
 			</div>
 			<div class="filter">
-				
 				<div class="filter-audience">
 					<el-select
 						v-model="audiencesSelecetion"
@@ -30,47 +29,30 @@
 					v-for="item in events"
 					:key="item.id"
 				>
-					<div class="events__item__category" v-if="item.category">
-						#{{ item.category.name }}
-					</div>
 					<div
 						v-on:click.stop="$router.push(`/events/tickets/${item.id}`)"
 						class="events__item__buy-ticket"
 					>
 						Купить билет
 					</div>
+					<!-- <img
+						v-if="item.preview"
+						:src="'http://localhost:5000/' + item.preview"
+						alt="banner-image"
+					/> -->
 					<img
-						v-if="item.banner"
-						:src="'http://localhost:5000/images/' + item.banner"
+						v-if="item.preview"
+						:src="require(`~/static/${item.preview}`)"
 						alt="banner-image"
 					/>
-					<img
+					<!-- <img src="./../../static/images/not-image.jpeg" alt="banner-image" /> -->
+					<!-- <img
 						v-else
 						src="../../static/images/not-image.jpeg"
 						alt="not-image"
-					/>
-					<div class="events__item__schedule">
-						{{
-							item.startDate.split('-')[2] +
-							' ' +
-							month(item.startDate.split('-')[1]) +
-							' ' +
-							item.startDate.split('-')[0]
-						}}
-						—
-						{{
-							item.expirationDate.split('-')[2] +
-							' ' +
-							month(item.expirationDate.split('-')[1]) +
-							' ' +
-							item.expirationDate.split('-')[0]
-						}}
-					</div>
+					/> -->
 					<div class="events__item__name">
-						{{ item.name }}
-					</div>
-					<div class="events__item__address">
-						<i class="el-icon-location-outline"></i> {{ item.address }}
+						{{ item.title }}
 					</div>
 				</div>
 			</div>
@@ -108,18 +90,18 @@ export default Vue.extend({
 	layout: 'pages',
 	data() {
 		return {
-			categorys: null as unknown as Category[],
 			audiences: null as unknown as Audits[],
 			audiencesSelecetion: null as unknown as string,
 			events: null as unknown as Event[],
 			isMountedAudit: true,
-			isMountedCategory: true,
-			isMountedSearch: true,
 			page: 0,
 			limit: 10,
 			totalCount: 10,
 			isLoadingEvents: true,
-			test: '<p>TESTTESTTEST</p>'
+			imageUrl: {
+				type: '../../static/preview/07f187a8-5e1f-45ba-94f8-c824d924e034.jpeg',
+				default: ''
+			}
 		}
 	},
 	async fetch() {
@@ -135,10 +117,7 @@ export default Vue.extend({
 		await this.getEvents()
 	},
 	mounted() {
-		this.audiencesSelecetion =
-			this.$route.query.audit?.toString() || ''
-			
-			
+		this.audiencesSelecetion = this.$route.query.audit?.toString() || ''
 	},
 	methods: {
 		changePage(val: number) {
@@ -184,7 +163,7 @@ export default Vue.extend({
 				}
 			}
 			this.isMountedAudit = false
-		},
+		}
 	}
 })
 </script>
@@ -205,8 +184,8 @@ export default Vue.extend({
 		border-color: #24b9f0 !important;
 	}
 }
-.el-icon-arrow-up{
-		color: $accent-color !important;
+.el-icon-arrow-up {
+	color: $accent-color !important;
 }
 .el-select-dropdown__item {
 	height: 60px;
@@ -223,17 +202,17 @@ export default Vue.extend({
 		background-color: transparent !important;
 	}
 }
-.el-select-dropdown__item .hover{
+.el-select-dropdown__item .hover {
 	background-color: transparent !important;
 }
 .header-page {
 	margin: 30px 0 30px 0;
 	&-title {
 		font-size: 40px;
-    line-height: 1.25em;
+		line-height: 1.25em;
 		text-align: center;
-		font-family: "Montserrat Alternates", sans-serif;
-    font-weight: 700;
+		font-family: 'Montserrat Alternates', sans-serif;
+		font-weight: 700;
 	}
 }
 .filter {

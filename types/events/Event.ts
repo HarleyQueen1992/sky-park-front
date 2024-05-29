@@ -2,10 +2,10 @@ import { Category } from '../Category'
 
 export interface Event {
 	id: number
-	name: string
+	title: string
+	sub_title: string
+	preview: string
 	banner: string
-	category: Category
-	address: string
-	startDate: string
-	expirationDate: string
+	description: string
+	about_me: string
 }
