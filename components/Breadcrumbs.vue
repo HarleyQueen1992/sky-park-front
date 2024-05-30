@@ -1,16 +1,16 @@
 <template>
 	<div class="breadcrumbs">
 		<nuxt-link class="breadcrumbs__item" to="/">Главная</nuxt-link>
-		<!-- <nuxt-link
-			v-if="routes[0] !== 'index' && item !== 'id'"
+		<nuxt-link
+			v-if="routes[0] !== 'index' && routes[0] === 'events'"
 			:to="breadcrumbsUrl(item)"
 			class="breadcrumbs__item breadcrumbs__item_before"
 			:key="index"
-			v-for="(item, index) in routes"
+			v-for="(item, index) in routes.filter((item) => {return item !== 'events'})"
 		>
 			{{ breadcrumbsName(item) }}</nuxt-link
-		> -->
-	</div>
+		>
+	</div> 
 </template>
 <script lang="ts">
 import Vue from 'vue'
@@ -46,7 +46,8 @@ export default Vue.extend({
 <style lang="scss">
 .breadcrumbs {
 	height: 60px;
-	display: grid;
+	padding: 10px 0;
+	text-align: center;
 	&__item {
 		align-self: center;
 		justify-self: center;
@@ -57,7 +58,7 @@ export default Vue.extend({
 		font-size: 16px;
     line-height: 1.25em;
 		transition: opacity 0.3s;
-		padding: 10px 25px 10px 10px;
+		padding: 10px 35px 10px 10px;
 		position: relative;
 		&:hover {
 			opacity: 1;

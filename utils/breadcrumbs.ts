@@ -3,9 +3,9 @@ export const breadcrumbsWords = {
 		url: '/events',
 		name: ''
 	},
-	tickets: {
-		url: '',
-		name: 'Билеты'
+	id: {
+		url: '/events',
+		name: 'Развлечения'
 	},
 	cart: {
 		url: '',

@@ -4,12 +4,26 @@ module.exports = {
     browser: true,
     node: true,
   },
-  extends: [
-    '@nuxtjs/eslint-config-typescript',
-    'plugin:nuxt/recommended',
-    'prettier',
-  ],
-  plugins: [],
-  // add your custom rules here
-  rules: {},
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+    requireConfigFile: false,
+    ecmaVersion: 2020,
+  },
+  extends: ['@nuxtjs', 'plugin:nuxt/recommended', 'prettier'],
+  plugins: ['prettier'],
+  rules: {
+    'prettier/prettier': ['error'],
+    'vue/html-indent': ['error', 4],
+    'vue/singleline-html-element-content-newline': 0,
+    'vue/component-name-in-template-casing': ['error', 'PascalCase'],
+    'vue/valid-v-slot': [
+      'error',
+      {
+        allowModifiers: true,
+      },
+    ],
+  },
+  globals: {
+    _: true,
+  },
 }

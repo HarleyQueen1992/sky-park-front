@@ -1,19 +1,11 @@
 import { Audits } from './Audits'
-import { Category } from './Category'
 
 export interface Event {
 	id: number
-	name: string
+	title: string
+	sub_title: string
 	banner: string
-	category: Category
-	audits: Audits[]
-	address: string
-	startDate: string
-	expirationDate: string
-	phone: string
-	schedule: string
-	adultPrice: number
-	childPrice: number
+	audits: Audits
 	description: string
 	aboutMe: string
 }
