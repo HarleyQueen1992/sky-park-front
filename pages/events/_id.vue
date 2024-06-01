@@ -20,7 +20,33 @@
           </div>
         </div>
         <div class="event-content-tickets">
-          <h1>Билеты</h1>
+          <h1 class="event-content-tickets__title">Билеты</h1>
+          <div class="event-content-tickets-list" v-if="tickets.length > 0">
+            <div class="event-content-tickets-list-item" v-for="ticket in tickets" :key="ticket.id">
+              <div class="event-content-tickets-list-item-content">
+                <h1 class="event-content-tickets-list-item-content__title">{{ ticket.title }}</h1>
+                <h3 class="event-content-tickets-list-item-content__sub-title">{{ ticket.sub_title }}</h3>
+
+                <div class="event-content-tickets-list-item-content__descript" v-html="ticket.descript"></div>
+              </div>
+              <div class="event-content-tickets-list-item-price-block">
+                <div class="event-content-tickets-list-item-price-block__price">{{ ticket.price }} ₽</div>
+                <div class="event-content-tickets-list-item-price-block-counter">
+                  <div @click="decrCount(ticket.id)" class="event-content-tickets-list-item-price-block-counter__decr">
+                    <span></span>
+                  </div>
+                  <div class="event-content-tickets-list-item-price-block-counter__value">
+                    <span>{{ ticket.count }}</span>
+                  </div>
+                  <div @click="incrCount(ticket.id)" class="event-content-tickets-list-item-price-block-counter__incr">
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="event-content-tickets-not-found" v-else>Билеты не найдены</div>
+          <div class="event-content-tickets-add-to-basket"><span>Добавить в корзину</span></div>
         </div>
       </div>
     </div>
@@ -34,6 +60,7 @@ import Vue from 'vue'
 
 // Types
 import { Event } from '~/types/Event'
+import { Ticket } from '~/types/Ticket'
 
 // Utils
 import { monthZeroWord } from '~/utils/month'
@@ -44,6 +71,7 @@ export default Vue.extend({
   data() {
     return {
       event: null as unknown as Event,
+      tickets: [] as unknown as Ticket[],
       isLoadingEvent: true,
     }
   },
@@ -56,11 +84,37 @@ export default Vue.extend({
       .catch((err) => {
         console.log(err)
       })
+    await this.$axios
+      .$get('/ticket/' + this.$route.params.id)
+      .then((res) => {
+        this.tickets = res
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    this.fillCountForTicket()
     this.isLoadingEvent = false
   },
   methods: {
     month(monthNumber: string): string {
       return monthZeroWord[monthNumber]
+    },
+    decrCount(id: number) {
+      let ticket = this.tickets.find((ticket) => ticket.id == id)
+      if (ticket) {
+        ticket.count -= 1
+      }
+    },
+    incrCount(id: number) {
+      let ticket = this.tickets.find((ticket) => ticket.id == id)
+      if (ticket) {
+        ticket.count += 1
+      }
+    },
+    fillCountForTicket() {
+      for (const ticket of this.tickets) {
+        ticket.count = 0
+      }
     },
   },
 })
@@ -157,8 +211,149 @@ export default Vue.extend({
       &__title {
         font-size: 40px;
         padding-bottom: 20px;
-        margin: 0 50px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+        margin-left: 50px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      &-not-found {
+        padding: 200px 0;
+        text-align: center;
+        font-size: 40px;
+        color: rgba(0, 0, 0, 0.5);
+      }
+      &-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        &-item {
+          display: grid;
+          grid-template-rows: auto 150px;
+          grid-row-gap: 20px;
+          padding: 75px 75px 50px 75px;
+          &-content {
+            &__title {
+              color: $accent-color;
+              font-family: 'Montserrat Alternates', sans-serif;
+              line-height: 1.1em;
+              font-size: 26px;
+              margin-bottom: 25px;
+              text-align: center;
+            }
+            &__sub-title {
+              padding: 0 40px;
+              font-size: 18px;
+              line-height: 1.3em;
+              text-align: center;
+              font-weight: 400;
+            }
+            &__descript {
+              margin-top: 50px;
+              li {
+                position: relative;
+                padding-left: 50px;
+                margin-bottom: 10px;
+                &:before {
+                  content: '';
+                  position: absolute;
+                  left: 10px;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  height: 8px;
+                  border-radius: 50%;
+                  width: 8px;
+                  background-color: $accent-color;
+                }
+                color: #bdbdbd;
+                font-size: 16px;
+              }
+            }
+          }
+
+          &-price-block {
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            &__price {
+              align-self: center;
+              justify-self: center;
+              font-size: 30px;
+              font-weight: 700;
+            }
+            &-counter {
+              align-self: center;
+              justify-self: center;
+              display: grid;
+              height: 80px;
+              grid-template-columns: 80px 80px 80px;
+              &__value {
+                span {
+                  font-size: 22px;
+                  font-weight: 500;
+                  align-self: center;
+                  justify-self: center;
+                }
+                align-self: center;
+                justify-self: center;
+                display: grid;
+                height: 80%;
+                background-color: white;
+                width: 80%;
+                border: 2px solid $accent-color;
+                border-radius: 50%;
+              }
+              &__decr {
+                cursor: pointer;
+                display: grid;
+                span {
+                  width: 25px;
+                  height: 2px;
+                  background-color: rgba(0, 0, 0, 0.5);
+                  align-self: center;
+                  justify-self: center;
+                  transform: translateY(-50%);
+                }
+              }
+              &__incr {
+                cursor: pointer;
+                display: grid;
+                span {
+                  align-self: auto;
+                  justify-self: center;
+                  position: relative;
+                  &::before {
+                    content: '';
+                    width: 25px;
+                    height: 2px;
+                    top: 50%;
+                    left: 50%;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    transform: translate(-50%, -50%);
+                    position: absolute;
+                  }
+                  &::after {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    height: 25px;
+                    width: 2px;
+                    background-color: rgba(0, 0, 0, 0.5);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      &-add-to-basket {
+        cursor: pointer;
+        margin: 50px auto;
+        background-color: $accent-color;
+        width: 280px;
+        padding: 10px;
+        font-weight: 500;
+        font-size: 18px;
+        color: white;
+        border-radius: 20px;
+        text-align: center;
       }
     }
   }
