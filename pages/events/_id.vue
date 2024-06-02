@@ -46,7 +46,9 @@
             </div>
           </div>
           <div class="event-content-tickets-not-found" v-else>Билеты не найдены</div>
-          <div class="event-content-tickets-add-to-basket"><span>Добавить в корзину</span></div>
+          <div class="event-content-tickets-add-to-basket" v-if="tickets.length > 0">
+            <span>Добавить в корзину</span>
+          </div>
         </div>
       </div>
     </div>
@@ -102,13 +104,13 @@ export default Vue.extend({
     decrCount(id: number) {
       let ticket = this.tickets.find((ticket) => ticket.id == id)
       if (ticket) {
-        ticket.count -= 1
+        ticket.count--
       }
     },
     incrCount(id: number) {
       let ticket = this.tickets.find((ticket) => ticket.id == id)
       if (ticket) {
-        ticket.count += 1
+        ticket.count++
       }
     },
     fillCountForTicket() {
@@ -222,7 +224,7 @@ export default Vue.extend({
       }
       &-list {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: repeat(3, 33%);
         &-item {
           display: grid;
           grid-template-rows: auto 150px;
@@ -350,7 +352,7 @@ export default Vue.extend({
         width: 280px;
         padding: 10px;
         font-weight: 500;
-        font-size: 18px;
+        font-size: 18pxnpm ru;
         color: white;
         border-radius: 20px;
         text-align: center;

@@ -1,30 +1,38 @@
 export const breadcrumbsWords = {
-	events: {
-		url: '/events',
-		name: ''
-	},
-	id: {
-		url: '/events',
-		name: 'Развлечения'
-	},
-	cart: {
-		url: '',
-		name: 'Корзина'
-	},
-	contacts: {
-		url: '',
-		name: 'Контакты'
-	},
-	visitors: {
-		url: '',
-		name: 'Посетителям'
-	},
-	about: {
-		url: '',
-		name: 'О музее'
-	},
-	news: {
-		url: '/news',
-		name: 'Новости'
-	}
+  events: {
+    url: '/',
+    name: 'Главная',
+  },
+  id: {
+    url: '/events',
+    name: 'Развлечения',
+  },
+  nature: {
+    url: '/about/',
+    name: 'О парке',
+  },
+  about: {
+    url: '/about',
+    name: 'Главная',
+  },
+  cart: {
+    url: '',
+    name: 'Корзина',
+  },
+  contacts: {
+    url: '',
+    name: 'Контакты',
+  },
+  visitors: {
+    url: '',
+    name: 'Посетителям',
+  },
+  history: {
+    url: '/about/history',
+    name: 'О парке',
+  },
+  news: {
+    url: '/news',
+    name: 'Новости',
+  },
 } as any
