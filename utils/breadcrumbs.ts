@@ -20,8 +20,8 @@ export const breadcrumbsWords = {
     name: 'Корзина',
   },
   contacts: {
-    url: '',
-    name: 'Контакты',
+    url: '/',
+    name: 'Главная',
   },
   visitors: {
     url: '',
@@ -32,11 +32,11 @@ export const breadcrumbsWords = {
     name: 'О парке',
   },
   news: {
-    url: '/news',
-    name: 'Новости',
+    url: '/',
+    name: 'Главная',
   },
   tickets: {
-    url: '',
+    url: '/events',
     name: 'Развлечения',
   },
 } as any

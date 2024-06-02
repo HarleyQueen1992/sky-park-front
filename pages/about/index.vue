@@ -44,7 +44,7 @@
               подходящий каньон от границы с Абхазией до Туапсе, выбирали место, которое будет не только красивым и
               красочным, но и туристически ориентированным.
             </p>
-            <nuxt-link to="/about/nature" class="about-body-block__arrow-block"
+            <nuxt-link to="/about/history" class="about-body-block__arrow-block"
               ><div class="about-body-block__arrow-block__arrow"></div
             ></nuxt-link>
           </div>
@@ -81,6 +81,7 @@ export default Vue.extend({
     &__title {
       color: white;
       padding-top: 200px;
+      padding-right: 50px;
       padding-left: 200px;
       font-weight: bold;
       margin-bottom: 20px;
@@ -88,6 +89,7 @@ export default Vue.extend({
     }
     &__sub-title {
       padding-left: 200px;
+      padding-right: 80px;
       color: white;
       font-size: 25px;
     }

@@ -47,6 +47,7 @@ export default Vue.extend({
 .breadcrumbs {
   height: 60px;
   padding: 10px 0;
+  padding-top: 20px;
   text-align: center;
   &__item {
     align-self: center;

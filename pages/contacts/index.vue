@@ -1,204 +1,100 @@
 <template>
-	<div class="contacts">
-		<div class="contacts-banner">
-			<img src="../../static/images/contacts-banner.jpeg" alt="banner" />
-			<h2 class="contacts-banner__title">Контакты</h2>
-		</div>
-		<div class="container">
-			<h1 class="contacts__title">
-				Учреждение "Луганский Государственный музей истории Великой
-				отечественной войны"
-			</h1>
-			<div class="contacts-body">
-				<div class="contacts-body-block">
-					<div class="contacts-body-block-item">
-						<i class="el-icon-location"></i>
-						<span class="contacts-body-block-item__date"
-							>Пр. Победителей, 8, г. Луганск, ЛНР, 10012</span
-						>
-					</div>
-					<div class="contacts-body-block-item">
-						<i class="el-icon-time"></i>
-						<span class="contacts-body-block-item__schedule"
-							>ВТ-ВС с 10:00 до 19:00 Вход для посетителей до 18:30.
-						</span>
-					</div>
-					<div class="contacts-body-block-item">
-						<i class="el-icon-message"></i>
-						<span class="contacts-body-block-item__email"
-							>museum@gmail.com</span
-						>
-					</div>
-				</div>
-				<div class="contacts-body-block">
-					<h3 class="contacts-body-block__title">Администратор:</h3>
-					<div class="contacts-body-block-item">
-						<i class="el-icon-mobile-phone"></i>
-						<a href="tel:+79591325687" class="contacts-body-block-item__phone"
-							>+7 (959) 132-56-87
-						</a>
-					</div>
-					<div class="contacts-body-block-item">
-						<i class="el-icon-time"></i>
-						<span class="contacts-body-block-item__schedule"
-							>(ВТ-ВС с 10:00 до 17:00)</span
-						>
-					</div>
-				</div>
-				<div class="contacts-body-block">
-					<h3 class="contacts-body-block__title">Приемная:</h3>
-					<div class="contacts-body-block-item">
-						<i class="el-icon-mobile-phone"></i>
-						<a href="tel:+79591325687" class="contacts-body-block-item__phone"
-							>+7 (959) 132-56-87
-						</a>
-					</div>
-					<div class="contacts-body-block-item">
-						<i class="el-icon-printer"></i>
-						<a href="tel:+79591325687" class="contacts-body-block-item__phone"
-							>+7 (959) 132-56-87
-						</a>
-					</div>
-				</div>
-				<div class="contacts-body-block">
-					<h3 class="contacts-body-block__title">Заказ экскурсий:</h3>
-					<div class="contacts-body-block-list">
-						<a href="#" class="contacts-body-block-list-item">
-							<i class="el-icon-phone"></i>
-							<span class="contacts-body-block-list-item__social">Viber </span>
-						</a>
-						<a href="#" class="contacts-body-block-list-item">
-							<i class="el-icon-s-promotion"></i>
-							<span class="contacts-body-block-list-item__social"
-								>Telegram
-							</span>
-						</a>
-					</div>
-					<div class="contacts-body-block-item">
-						<i class="el-icon-time"></i>
-						<span class="contacts-body-block-item__schedule"
-							>(ВТ-ВС с 10:00 до 17:00)</span
-						>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="contacts">
+    <div class="container">
+      <h1 class="contacts__title">Как доехать</h1>
+      <div class="contacts-body">
+        <div class="contacts-body-col-1 contacts-body-col">
+          <h2>Контакты</h2>
+          <p>8 800 100 4 207</p>
+          <p>Контактный центр работает</p>
+          <p>ежедневно с 9:00 до 20:00</p>
+          <p class="link">sochi@skypark.ru</p>
+        </div>
+        <div class="contacts-body-col-2 contacts-body-col">
+          <h2>График работы</h2>
+          <p>Ежедневно с 10:00 до 18:30</p>
+          <p><i>* для вошедших до закрытия кассы прогулка доступна до 19:15</i></p>
+        </div>
+        <div class="contacts-body-col-3 contacts-body-col">
+          <h2>Адрес</h2>
+          <p>г. Сочи, с. Казачий брод, ул. Краснофлотская</p>
+        </div>
+      </div>
+    </div>
+    <iframe
+      class="contacts-map"
+      src="https://yandex.ru/map-widget/v1/?lang=ru_RU&amp;scroll=false&amp;source=constructor-api&amp;um=constructor%3A9eb055d0453bd128cb560dfae35965486b934df201a81763e8f68e25dea85629"
+      frameborder="0"
+      allowfullscreen="true"
+      width="100%"
+      height="100%"
+      style="display: block"
+    ></iframe>
+    <div class="container">
+      <p class="contacts-text">
+        В Skypark вы можете комфортно добраться трансфером, организованным из Сочи, Адлера, Красной Поляны и
+        Олимпийского парка. Можно воспользоваться маршрутами общественного транспорта или доехать на автомобиле.
+      </p>
+    </div>
+  </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
 
 export default Vue.extend({
-	name: 'contacts',
-	layout: 'pages'
+  name: 'contacts',
+  layout: 'pages',
 })
 </script>
 
 <style lang="scss">
+.link {
+  text-decoration: underline;
+  color: blue;
+}
 .contacts {
-	&-banner {
-		position: relative;
-		height: 300px;
-		width: 100%;
-		img {
-			position: absolute;
-			top: 0;
-			left: 0;
-			z-index: 10;
-			object-fit: cover;
-			width: 100%;
-			height: 100%;
-		}
-		&__title {
-			position: absolute;
-			top: 50%;
-			text-transform: uppercase;
-			font-weight: 400;
-			font-size: 50px;
-			left: 50%;
-			z-index: 11;
-			padding-bottom: 20px;
-			color: white;
-			transform: translateX(-50%);
-			&::before {
-				content: '';
-				position: absolute;
-				left: 50%;
-				z-index: 11;
-				width: 25%;
-				height: 4px;
-				background-color: rgba(255, 255, 255, 0.5);
-				bottom: 0;
-				transform: translateX(-50%);
-			}
-		}
-	}
-	&__title {
-		width: 80%;
-		margin: 50px auto;
-		font-weight: 500;
-		font-size: 26px;
-		text-align: center;
-	}
-	&-body {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-column-gap: 50px;
-		padding: 0 50px;
-		&-block {
-			background-color: white;
-			border-top: 4px solid rgba(0, 0, 0, 0.5);
-			padding: 30px 30px 10px 30px;
-			margin-bottom: 50px;
-			&__title {
-				font-weight: 500;
-				letter-spacing: 0.8px;
-				margin-bottom: 20px;
-			}
-			&-item {
-				display: grid;
-				grid-template-columns: 20px 1fr;
-				grid-column-gap: 10px;
-				margin-bottom: 20px;
-
-				&__phone {
-					color: rgb(255, 89, 0);
-				}
-				i {
-					color: black;
-					opacity: 0.5;
-					align-self: center;
-					justify-self: center;
-				}
-				&__schedule {
-					word-break: break-all;
-				}
-				span {
-				}
-			}
-			&-list {
-				display: grid;
-				grid-template-columns: auto 1fr;
-				grid-column-gap: 20px;
-				margin-bottom: 20px;
-				&-item {
-					display: grid;
-					grid-template-columns: 20px 1fr;
-					grid-column-gap: 5px;
-					color: black;
-					&__social {
-						color: rgb(255, 89, 0);
-						display: inline;
-						align-self: center;
-					}
-					i {
-						color: rgb(255, 89, 0);
-						align-self: center;
-						font-size: 20px;
-					}
-				}
-			}
-		}
-	}
+  &__title {
+    font-size: 40px;
+    margin: 20px 0;
+    line-height: 1.25em;
+    text-align: center;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-weight: 700;
+  }
+  &-map {
+    height: 700px;
+  }
+  &-text {
+    width: 60;
+    text-align: center;
+    font-size: 20px;
+    margin: 50px 0;
+  }
+  &-body {
+    margin: 50px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 50px;
+    &-col-1 {
+    }
+    &-col-2 {
+    }
+    &-col-3 {
+      width: 50%;
+    }
+    &-col {
+      h2 {
+        margin-bottom: 10px;
+        font-size: 20px;
+      }
+      p {
+        margin-bottom: 5px;
+      }
+      i {
+        color: rgba(0, 0, 0, 0.8);
+        font-style: italic;
+      }
+    }
+  }
 }
 </style>

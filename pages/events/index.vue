@@ -189,7 +189,7 @@ export default Vue.extend({
   background-color: transparent !important;
 }
 .header-page {
-  margin: 30px 0 30px 0;
+  margin: 20px 0 30px 0;
   &-title {
     font-size: 40px;
     line-height: 1.25em;
