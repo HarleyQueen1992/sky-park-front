@@ -35,4 +35,8 @@ export const breadcrumbsWords = {
     url: '/news',
     name: 'Новости',
   },
+  tickets: {
+    url: '',
+    name: 'Развлечения',
+  },
 } as any

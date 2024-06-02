@@ -1,4 +1,4 @@
 export interface Booking {
-	id: number
-	isChild: boolean
+  id: number
+  count: number
 }

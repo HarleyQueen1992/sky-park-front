@@ -46,7 +46,7 @@
             </div>
           </div>
           <div class="event-content-tickets-not-found" v-else>Билеты не найдены</div>
-          <div class="event-content-tickets-add-to-basket" v-if="tickets.length > 0">
+          <div @click="addToCart()" class="event-content-tickets-add-to-basket" v-if="tickets.length > 0">
             <span>Добавить в корзину</span>
           </div>
         </div>
@@ -101,9 +101,24 @@ export default Vue.extend({
     month(monthNumber: string): string {
       return monthZeroWord[monthNumber]
     },
+    addToCart() {
+      // let tickets = this.tickets.filter((item) => item.count > 0)
+      // console.log(tickets)
+
+      for (let ticket of this.tickets) {
+        if (ticket.count > 0) {
+          this.$store.commit('setBooking', {
+            id: +ticket.id,
+            couunt: ticket.count,
+          })
+        } else {
+          this.$store.commit('deleteBookingById', +ticket.id)
+        }
+      }
+    },
     decrCount(id: number) {
       let ticket = this.tickets.find((ticket) => ticket.id == id)
-      if (ticket) {
+      if (ticket && ticket.count > 0) {
         ticket.count--
       }
     },
