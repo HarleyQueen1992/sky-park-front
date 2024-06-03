@@ -14,48 +14,18 @@
         </div>
         <div class="cart-list-item cart-list-column" v-for="item in carts" :key="item.id">
           <div class="cart-list-item-col-1">
-            <div class="cart-list-item-col-1__event">Мероприятие</div>
-            <div class="cart-list-item-col-1__name">
-              {{ item.date.event.name }}
-            </div>
-            <div class="cart-list-item-col-1__category" v-if="item.countAdult > 0">
-              Взрослый (РФ и другие страны ЕАЭС)
-            </div>
-            <div class="cart-list-item-col-1__category" v-if="item.countChild > 0">
-              Дети в возрасте до 6 лет включительно
-            </div>
-            <div class="cart-list-item-col-1-date-address">
-              <span class="cart-list-item-col-1-date-address__date"
-                >{{ item.date.date.split('-')[2] }}
-                {{ month(item.date.date.split('-')[1]) }}
-                {{ item.date.date.split('-')[0] }} г., {{ item.time.slice(0, 5) }}</span
-              >
-              <span class="cart-list-item-col-1-date-address__address">
-                <i class="el-icon-location"></i>
-                {{ item.date.event.address }}</span
-              >
-            </div>
+            <h2 class="cart-list-item-col-1__event">{{ item.title }}</h2>
+            <h3>{{ item.sub_title }}</h3>
           </div>
           <div class="cart-list-item-col-2">
-            <div class="cart-list-item-col-2-count" v-if="item.countAdult > 0">
-              <span class="cart-list-item-col-2-count__row-1">{{ item.countAdult }} шт</span>
-              <span class="cart-list-item-col-2-count__row-2">(Взрослый)</span>
-            </div>
-            <div class="cart-list-item-col-2-count" v-if="item.countChild > 0">
-              <span class="cart-list-item-col-2-count__row-1">{{ item.countChild }} шт</span>
-              <span class="cart-list-item-col-2-count__row-2">(Детский)</span>
+            <div class="cart-list-item-col-2-count">
+              <span class="cart-list-item-col-2-count__row-1">{{ getCount(+item.id) }} шт</span>
             </div>
           </div>
           <div class="cart-list-item-col-3">
             <div class="cart-list-item-col-3-price">
               <span
-                >{{
-                  item.countAdult > 0 && item.countChild > 0
-                    ? item.countAdult * item.date.event.adultPrice + item.countChild * item.date.event.childPrice
-                    : item.countAdult > 0
-                    ? item.countAdult * item.date.event.adultPrice
-                    : item.countChild * item.date.event.childPrice
-                }}
+                >{{ item.price }}
                 ₽
               </span>
             </div>
@@ -75,8 +45,8 @@
         <i class="el-icon-loading"></i>
       </div>
       <div v-if="carts.length !== 0" class="cart-total">
-        <span>Итого</span>
-        <span>{{ total() }} ₽ </span>
+        <span class="cart-total-col-1">Итого</span>
+        <span class="cart-total-col-2">{{ totalPrice() }} ₽ </span>
       </div>
       <div v-if="carts.length !== 0" class="cart-btns">
         <button @click="$router.push('/events')" class="cart-btns__continue-shopping cart-btns__btn">
@@ -90,14 +60,12 @@
 <script lang="ts">
 import Vue from 'vue'
 
-// Utils
-import { monthZeroWord } from '~/utils/month'
-
 // Types
 import { Cart } from '@/types/events/tickets/cart/Cart'
 
 // Components
 import Dialog from '~/components/events/tickets/Dialog.vue'
+import { Booking } from '~/types/Booking'
 
 export default Vue.extend({
   name: 'cart',
@@ -107,39 +75,17 @@ export default Vue.extend({
     return {
       carts: [] as Cart[],
       isLoading: true,
+      booking: this.$store.getters.getBooking as Booking[],
       dialogVisible: false,
     }
   },
   async fetch() {
-    let booking = this.$store.getters.getBooking
-    const result: { id: any }[] = []
-    for (let i = 0; i < booking.length; i++) {
-      let exists = false
-      let obj = { id: booking[i].id, countChild: 0, countAdult: 0 }
-      for (let j = 0; j < result.length; j++) {
-        if (booking[i].id === result[j].id) {
-          exists = true
-          break
-        }
-      }
-      if (!exists) {
-        result.push(obj)
-      }
-    }
-    for (let i = 0; i < result.length; i++) {
+    for (let item of this.booking) {
       await this.$axios
-        .get(`/time/detail/${result[i].id}`)
+        .get(`/ticket/${item.id}`)
         .then((res) => {
           this.carts.push({
-            ...res.data,
-            countChild: this.$store.getters.getBookingCountByIdAndIsChild({
-              id: result[i].id,
-              isChild: true,
-            }),
-            countAdult: this.$store.getters.getBookingCountByIdAndIsChild({
-              id: result[i].id,
-              isChild: false,
-            }),
+            ...res.data[0],
           })
         })
         .catch((err) => {
@@ -149,28 +95,22 @@ export default Vue.extend({
     this.isLoading = false
   },
   methods: {
-    month(monthNumber: string) {
-      return monthZeroWord[monthNumber]
-    },
     dialogVisibleFalse() {
       this.dialogVisible = false
     },
-    total() {
-      let sum = 0
-      for (let i = 0; i < this.carts.length; i++) {
-        if (this.carts[i].countAdult > 0) {
-          sum += this.carts[i].countAdult * this.carts[i].date.event.adultPrice
-        }
-        if (this.carts[i].countChild > 0) {
-          sum += this.carts[i].countChild * this.carts[i].date.event.childPrice
-        }
-      }
-      return sum
-    },
     deleteItem(itemId: number) {
-      console.log(itemId)
       this.carts = this.carts.filter((el) => el.id !== itemId.toString())
       this.$store.commit('deleteBookingById', itemId)
+    },
+    getCount(id: number) {
+      return this.booking.find((el) => el.id == id)?.count
+    },
+    totalPrice() {
+      let total = 0
+      for (let ticket of this.carts) {
+        total += ticket.price
+      }
+      return total
     },
   },
 })
@@ -178,7 +118,7 @@ export default Vue.extend({
 
 <style lang="scss">
 .cart-page {
-  margin-top: 30px;
+  margin-top: 20px;
   margin-bottom: 50px;
 }
 .dialog {
@@ -188,7 +128,11 @@ export default Vue.extend({
   &-header {
     margin-bottom: 30px;
     &__title {
-      font-weight: 500;
+      font-size: 40px;
+      line-height: 1.25em;
+      text-align: center;
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 700;
     }
   }
   &-list {
@@ -210,33 +154,15 @@ export default Vue.extend({
       border-top: 1px solid rgba(0, 0, 0, 0.2);
       padding: 30px 0;
       &-col-1 {
-        &__event {
-          display: block;
-          font-size: 14px;
-          text-transform: uppercase;
+        h2 {
+          font-size: 30px;
+          font-weight: 600;
+          margin-bottom: 20px;
         }
-        &__name {
-          font-size: 25px;
-          margin: 20px 0;
-        }
-        &__category {
-          font-size: 14px;
-          opacity: 0.5;
-          margin: 20px 0;
-        }
-        &-date-address {
-          display: grid;
-          grid-template-columns: 200px 300px;
-          &__date {
-            align-self: center;
-            font-size: 14px;
-          }
-          &__address {
-            padding-left: 20px;
-            font-size: 14px;
-            border-left: 2px solid rgba(0, 0, 0, 0.2);
-            opacity: 0.5;
-          }
+        h3 {
+          font-size: 22px;
+          font-weight: 400;
+          color: rgba(0, 0, 0, 0.7);
         }
       }
       &-col-2 {
@@ -245,17 +171,11 @@ export default Vue.extend({
         &-count {
           margin: 10px;
           display: grid;
-          grid-template-rows: 1fr 1fr;
+          grid-template-rows: 1fr;
           &__row-1 {
             font-size: 20px;
             align-self: center;
             justify-self: center;
-          }
-          &__row-2 {
-            align-self: center;
-            justify-self: center;
-            display: block;
-            font-size: 14px;
           }
         }
       }
@@ -282,10 +202,20 @@ export default Vue.extend({
   }
   &-total {
     font-size: 25px;
-    color: #b4966e;
+    margin-top: 50px;
+    color: black;
     text-align: right;
-    span {
-      margin-left: 150px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    font-weight: 700;
+    &-col-1 {
+      align-self: center;
+      justify-self: start;
+    }
+    &-col-2 {
+      margin-right: 120px;
+      align-self: center;
+      justify-self: end;
     }
   }
   &-btns {

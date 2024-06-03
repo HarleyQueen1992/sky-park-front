@@ -38,7 +38,9 @@
             </div>
             <div class="events__item__card-info-row">
               <div class="events__item__card-info-row-col-1">Подробнее</div>
-              <div class="events__item__card-info-row-col-2">3 000 ₽</div>
+              <div class="events__item__card-info-row-col-2">
+                {{ getLowPrice(item.id) ? getLowPrice(item.id) : 0 }} ₽
+              </div>
             </div>
           </div>
         </nuxt-link>
@@ -70,6 +72,16 @@ import { monthZeroWord } from '~/utils/month'
 import { Audits } from '~/types/Audits'
 import { Event } from '~/types/events/Event'
 
+export interface Ticket {
+  id: number
+  title: string
+  sub_title: string
+  descript: string
+  price: number
+  count: number
+  event: Event
+}
+
 export default Vue.extend({
   layout: 'pages',
   data() {
@@ -77,15 +89,12 @@ export default Vue.extend({
       audiences: null as unknown as Audits[],
       audiencesSelecetion: null as unknown as string,
       events: null as unknown as Event[],
+      tickets: null as unknown as Ticket[],
       isMountedAudit: true,
       page: 0,
       limit: 10,
       totalCount: 10,
       isLoadingEvents: true,
-      imageUrl: {
-        type: '../../static/preview/07f187a8-5e1f-45ba-94f8-c824d924e034.jpeg',
-        default: '',
-      },
     }
   },
   async fetch() {
@@ -98,12 +107,23 @@ export default Vue.extend({
       .catch((err) => {
         console.log(err)
       })
+    await this.$axios
+      .$get('/ticket')
+      .then((res) => {
+        this.tickets = res
+      })
+      .catch((err) => {
+        console.log(err)
+      })
 
     await this.getEvents()
   },
   methods: {
     changePage(val: number) {
       this.page = val - 1
+    },
+    getLowPrice(id: number) {
+      return this.tickets?.find((el) => el.event.id == id)?.price
     },
     month(monthNumber: string): string {
       return monthZeroWord[monthNumber]

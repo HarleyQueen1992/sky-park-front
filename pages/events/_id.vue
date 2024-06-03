@@ -87,7 +87,7 @@ export default Vue.extend({
         console.log(err)
       })
     await this.$axios
-      .$get('/ticket/' + this.$route.params.id)
+      .$get('/ticket/event/' + this.$route.params.id)
       .then((res) => {
         this.tickets = res
       })
@@ -109,7 +109,7 @@ export default Vue.extend({
         if (ticket.count > 0) {
           this.$store.commit('setBooking', {
             id: +ticket.id,
-            couunt: ticket.count,
+            count: ticket.count,
           })
         } else {
           this.$store.commit('deleteBookingById', +ticket.id)
