@@ -25,7 +25,7 @@
           <div class="cart-list-item-col-3">
             <div class="cart-list-item-col-3-price">
               <span
-                >{{ item.price }}
+                >{{ item.price * getCount(+item.id) }}
                 ₽
               </span>
             </div>
@@ -102,13 +102,13 @@ export default Vue.extend({
       this.carts = this.carts.filter((el) => el.id !== itemId.toString())
       this.$store.commit('deleteBookingById', itemId)
     },
-    getCount(id: number) {
-      return this.booking.find((el) => el.id == id)?.count
+    getCount(id: number): number {
+      return this.booking.find((el) => el.id == id)?.count ?? 1
     },
     totalPrice() {
       let total = 0
-      for (let ticket of this.carts) {
-        total += ticket.price
+      for (let i = 0; i < this.booking.length; i++) {
+        total += this.carts[i]?.price * this.booking[i]?.count
       }
       return total
     },
